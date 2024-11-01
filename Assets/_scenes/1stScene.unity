@@ -1198,6 +1198,10 @@ PrefabInstance:
       propertyPath: JumpHeight
       value: 0.7
       objectReference: {fileID: 0}
+    - target: {fileID: 2171625616409066014, guid: 20189348ff8fc0a4cad455bf29d9c511, type: 3}
+      propertyPath: RotationSmoothTime
+      value: 0.172
+      objectReference: {fileID: 0}
     - target: {fileID: 3848824341082581601, guid: 20189348ff8fc0a4cad455bf29d9c511, type: 3}
       propertyPath: analogMovement
       value: 1
