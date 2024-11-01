@@ -200,28 +200,51 @@ namespace StarterAssets
 			_animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
 			if (_animationBlend < 0.01f) _animationBlend = 0f;
 
-			// normalise input direction
-			Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+			Vector3 inputDirection = Vector3.zero;
+			Vector3 targetDirection = Vector3.zero;
+			float rotation = 0f;
 
-			// note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-			// if there is a move input rotate player when the player is moving
-			if (_input.move != Vector2.zero)
+			Debug.Log($"_input.move.x: {_input.move.x}, _input.move.y: {_input.move.y} ");
+
+
+			// If the requested direction is behind us, we want to walk backwards
+			if (_input.move.y < -0.5f)
 			{
-				_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-								  _mainCamera.transform.eulerAngles.y;
-				float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
+				inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+
+				// Player faces which way
+				_targetRotation = Mathf.Atan2(-inputDirection.x, -inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+
+				// Player moves towards which direction
+				targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * -Vector3.forward;
+
+				rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
 					RotationSmoothTime);
 
-				// rotate to face input direction relative to camera position
+				// Do the rotation
 				transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+
+				// move the player
+				_controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 			}
+			else
+			{
+				inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
 
+				_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
 
-			Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+				targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
-			// move the player
-			_controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
-							 new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+				rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
+					RotationSmoothTime);
+
+				// Do the rotation
+				transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+
+				// move the player
+				_controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
+								 new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+			}
 
 			// update animator if using character
 			if (_hasAnimator)
