@@ -1200,19 +1200,19 @@ MonoBehaviour:
     m_Value: 0
   skyIntensityMode:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 0
   exposure:
     m_OverrideState: 1
     m_Value: 11
   multiplier:
-    m_OverrideState: 1
-    m_Value: 1
+    m_OverrideState: 0
+    m_Value: 2
   upperHemisphereLuxValue:
     m_OverrideState: 1
-    m_Value: 0.4660715
+    m_Value: 0.46607146
   upperHemisphereLuxColor:
     m_OverrideState: 1
-    m_Value: {x: 0.18750614, y: 0.29181972, z: 0.5}
+    m_Value: {x: 0.18750615, y: 0.29181966, z: 0.5}
   desiredLuxValue:
     m_OverrideState: 1
     m_Value: 20000
@@ -1854,7 +1854,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   meteringMode:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 2
   luminanceSource:
     m_OverrideState: 1
@@ -1863,14 +1863,14 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 0
   compensation:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   limitMin:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: -1
   limitMax:
-    m_OverrideState: 1
-    m_Value: 14
+    m_OverrideState: 0
+    m_Value: 15
   curveMap:
     m_OverrideState: 1
     m_Value:
@@ -1950,13 +1950,13 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   adaptationMode:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   adaptationSpeedDarkToLight:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 3
   adaptationSpeedLightToDark:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   weightTextureMask:
     m_OverrideState: 1
