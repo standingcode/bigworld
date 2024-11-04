@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 8900000, guid: 619e305f5165a9946b7f72464e44ca4a, type: 3}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.15361406, g: 0.19034413, b: 0.25192168, a: 1}
+  m_IndirectSpecularColor: {r: 262.1177, g: 324.74368, b: 429.81012, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -324,7 +324,7 @@ MonoBehaviour:
   m_InnerSpotPercent: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
-  m_VolumetricDimmer: 1
+  m_VolumetricDimmer: 12.82
   m_LightUnit: 2
   m_FadeDistance: 10000
   m_VolumetricFadeDistance: 10000
@@ -354,7 +354,7 @@ MonoBehaviour:
   m_FlareFalloff: 4
   m_SurfaceTexture: {fileID: 0}
   m_SurfaceTint: {r: 1, g: 1, b: 1, a: 1}
-  m_Distance: 1.5e+11
+  m_Distance: 67.49
   m_UseRayTracedShadows: 0
   m_NumRayTracingSamples: 4
   m_FilterTracedShadow: 1
@@ -415,7 +415,7 @@ MonoBehaviour:
   m_ShadowVariant: 0
   m_ShadowPrecision: 0
   useOldInspector: 0
-  useVolumetric: 1
+  useVolumetric: 0
   featuresFoldout: 1
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
@@ -479,7 +479,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 1
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 2
   m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 1
@@ -498,13 +498,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 496929756}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.7240656, y: -0.24130431, z: 0.21299006, w: 0.61002994}
   m_LocalPosition: {x: 2.1742077, y: 3.4320998, z: -0.46150577}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 99.53198, y: -4.8609924, z: 32.748993}
 --- !u!1001 &746329221
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -639,7 +639,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  - {fileID: 2100000, guid: c6c1495aa62a7b34cac9810dbc513675, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1181,6 +1181,18 @@ PrefabInstance:
       propertyPath: near clip plane
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5932549737783441445, guid: 555cd9dde05a2794788e29083fe9d1fd, type: 3}
+      propertyPath: m_AllowDynamicResolution
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6092914161598681473, guid: 555cd9dde05a2794788e29083fe9d1fd, type: 3}
+      propertyPath: stopNaNs
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6092914161598681473, guid: 555cd9dde05a2794788e29083fe9d1fd, type: 3}
+      propertyPath: allowDynamicResolution
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1194,17 +1206,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2171625616409066014, guid: 20189348ff8fc0a4cad455bf29d9c511, type: 3}
-      propertyPath: JumpHeight
-      value: 0.7
+    - target: {fileID: 1396345142103961439, guid: 20189348ff8fc0a4cad455bf29d9c511, type: 3}
+      propertyPath: m_DefaultControlScheme
+      value: Gamepad
       objectReference: {fileID: 0}
     - target: {fileID: 2171625616409066014, guid: 20189348ff8fc0a4cad455bf29d9c511, type: 3}
-      propertyPath: RotationSmoothTime
-      value: 0.172
-      objectReference: {fileID: 0}
-    - target: {fileID: 3848824341082581601, guid: 20189348ff8fc0a4cad455bf29d9c511, type: 3}
-      propertyPath: analogMovement
-      value: 1
+      propertyPath: walkBackwardsInputYPosition
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7300198900357942178, guid: 20189348ff8fc0a4cad455bf29d9c511, type: 3}
       propertyPath: m_Name
