@@ -55,7 +55,7 @@ MonoBehaviour:
     m_Value: 65535
   reflectionLightingMultiplier:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.5
   reflectionLightingLayers:
     m_OverrideState: 1
     m_Value: 65535
@@ -339,7 +339,7 @@ MonoBehaviour:
     m_Value: 1
   enabled:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   colorMode:
     m_OverrideState: 1
     m_Value: 1
@@ -372,7 +372,7 @@ MonoBehaviour:
     m_Value: 400
   enableVolumetricFog:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   albedo:
     m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -903,7 +903,7 @@ MonoBehaviour:
     m_Value: 20000
   updateMode:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
   updatePeriod:
     m_OverrideState: 1
     m_Value: 0
@@ -2118,10 +2118,10 @@ MonoBehaviour:
     m_Value: 1
   fixedExposure:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.6521741
   compensation:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   limitMin:
     m_OverrideState: 1
     m_Value: -1
