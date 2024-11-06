@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class CameraFollow : MonoBehaviour
 {
 

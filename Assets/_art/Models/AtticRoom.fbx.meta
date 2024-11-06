@@ -19,6 +19,16 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: AtticWallMaterial
     second: {fileID: 2100000, guid: 2c85be73a00970c4e90dcf1a7932c428, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: AtticWallMaterial.001
+    second: {fileID: 2100000, guid: cc2d408c6a9fd5144b3ad666908f191f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: AtticWallMaterial.002
+    second: {fileID: 2100000, guid: e80afdec19dcb4f4c8b37943814a2588, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
