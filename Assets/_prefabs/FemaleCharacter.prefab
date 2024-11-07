@@ -2464,7 +2464,7 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 64
-  walkBackwardsInputYPosition: -0.701
+  walkBackwardsInputYPosition: -0.35
 --- !u!114 &7735973469510334015
 MonoBehaviour:
   m_ObjectHideFlags: 0
