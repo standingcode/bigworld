@@ -16,10 +16,12 @@ namespace StarterAssets
 	{
 		[Header("Player")]
 		[Tooltip("Move speed of the character in m/s")]
-		[SerializeField] private float MoveSpeed = 2.0f;
+		[SerializeField] private float moveSpeed = 2.0f;
+		private float moveSpeedScaled => moveSpeed * transform.localScale.x;
 
 		[Tooltip("Sprint speed of the character in m/s")]
-		[SerializeField] private float SprintSpeed = 5.335f;
+		[SerializeField] private float sprintSpeed = 5.335f;
+		private float sprintSpeedScaled => sprintSpeed * transform.localScale.x;
 
 		[Tooltip("How fast the character turns to face movement direction")]
 		[Range(0.0f, 0.3f)]
@@ -34,7 +36,8 @@ namespace StarterAssets
 
 		[Space(10)]
 		[Tooltip("The height the player can jump")]
-		[SerializeField] private float JumpHeight = 1.2f;
+		[SerializeField] private float jumpHeight = 1.2f;
+		private float jumpHeightScaled => jumpHeight * transform.localScale.x;
 
 		[Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
 		[SerializeField] private float Gravity = -15.0f;
@@ -51,10 +54,12 @@ namespace StarterAssets
 		[SerializeField] private bool Grounded = true;
 
 		[Tooltip("Useful for rough ground")]
-		[SerializeField] private float GroundedOffset = -0.14f;
+		[SerializeField] private float groundedOffset = -0.14f;
+		private float groundedOffsetScaled => groundedOffset * transform.localScale.x;
 
 		[Tooltip("The radius of the grounded check. Should match the radius of the CharacterController")]
-		[SerializeField] private float GroundedRadius = 0.28f;
+		[SerializeField] private float groundedRadius = 0.28f;
+		private float groundedRadiusScaled => groundedRadius * transform.localScale.x;
 
 		[Tooltip("What layers the character uses as ground")]
 		[SerializeField] private LayerMask GroundLayers;
@@ -87,6 +92,7 @@ namespace StarterAssets
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
 		private GameObject _mainCamera;
+		private DetermineSlopeBelow _determineSlopeBelow;
 
 		private const float _threshold = 0.01f;
 
@@ -119,6 +125,7 @@ namespace StarterAssets
 			_hasAnimator = TryGetComponent(out _animator);
 			_controller = GetComponent<CharacterController>();
 			_input = GetComponent<StarterAssetsInputs>();
+			_determineSlopeBelow = GetComponent<DetermineSlopeBelow>();
 #if ENABLE_INPUT_SYSTEM
 			_playerInput = GetComponent<PlayerInput>();
 #else
@@ -153,9 +160,9 @@ namespace StarterAssets
 		private void GroundedCheck()
 		{
 			// set sphere position, with offset
-			Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
+			Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - groundedOffset,
 				transform.position.z);
-			Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
+			Grounded = Physics.CheckSphere(spherePosition, groundedRadius, GroundLayers,
 				QueryTriggerInteraction.Ignore);
 
 			// update animator if using character
@@ -172,7 +179,7 @@ namespace StarterAssets
 		private void Move()
 		{
 			// set target speed based on move speed, sprint speed and if sprint is pressed
-			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+			float targetSpeed = _input.sprint ? sprintSpeed : moveSpeed;
 
 			// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -229,14 +236,14 @@ namespace StarterAssets
 			transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
 
 			// move the player
-			_controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
-							 new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+			_controller.Move(targetDirection.normalized * (_speed * _determineSlopeBelow.SlopeMultiplier * Time.deltaTime) +
+							 new Vector3(0.0f, _verticalVelocity * (1 - _determineSlopeBelow.SlopeMultiplier), 0.0f) * Time.deltaTime);
 
 			// update animator if using character
 			if (_hasAnimator)
 			{
 				_animator.SetFloat(_animIDSpeed, _animationBlend);
-				_animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+				_animator.SetFloat(_animIDMotionSpeed, inputMagnitude * _determineSlopeBelow.SlopeMultiplier);
 			}
 		}
 
@@ -264,7 +271,7 @@ namespace StarterAssets
 				if (_input.jump && _jumpTimeoutDelta <= 0.0f)
 				{
 					// the square root of H * -2 * G = how much velocity needed to reach desired height
-					_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+					_verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * Gravity);
 
 					// update animator if using character
 					if (_hasAnimator)
@@ -326,8 +333,8 @@ namespace StarterAssets
 
 			// when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
 			Gizmos.DrawSphere(
-				new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z),
-				GroundedRadius);
+				new Vector3(transform.position.x, transform.position.y - groundedOffset, transform.position.z),
+				groundedRadius);
 		}
 
 		private void OnFootstep(AnimationEvent animationEvent)
