@@ -27,6 +27,7 @@ public class DetermineSlopeBelow : MonoBehaviour
 		float returningThisShit = Mathf.Clamp01((1f / relativeLengthOfTheHypNormalised));
 
 		return returningThisShit;
+
 	}
 
 

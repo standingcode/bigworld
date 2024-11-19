@@ -236,8 +236,9 @@ namespace StarterAssets
 			transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
 
 			// move the player
-			_controller.Move(targetDirection.normalized * (_speed * _determineSlopeBelow.SlopeMultiplier * Time.deltaTime) +
-							 new Vector3(0.0f, _verticalVelocity * (1 - _determineSlopeBelow.SlopeMultiplier), 0.0f) * Time.deltaTime);
+			_controller.Move(
+							targetDirection.normalized * (_speed * _determineSlopeBelow.SlopeMultiplier * Time.deltaTime) +
+							 new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 
 			// update animator if using character
 			if (_hasAnimator)
