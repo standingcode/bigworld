@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class DetermineSlopeBelow : MonoBehaviour
 {
@@ -11,26 +9,15 @@ public class DetermineSlopeBelow : MonoBehaviour
 	private RaycastHit hit;
 	private float slopeAngle = 0f;
 
-
-	// b / sin(b) = 1 / sin(90f - slope angle)
 	public float SlopeMultiplier => GetTheMultiplier();
 
 	private float GetTheMultiplier()
 	{
-
 		if (slopeAngle == 0) return 1;
 
-		float relativeLengthOfTheHyp = Mathf.Sin((90f - slopeAngle) * Mathf.Deg2Rad);
-
-		float relativeLengthOfTheHypNormalised = 1f / relativeLengthOfTheHyp;
-
-		float returningThisShit = Mathf.Clamp01((1f / relativeLengthOfTheHypNormalised));
-
-		return returningThisShit;
-
+		float relativeLengthOfTheHyp = 1f / Mathf.Sin((90f - slopeAngle) * Mathf.Deg2Rad);
+		return Mathf.Clamp01((1f / relativeLengthOfTheHyp));
 	}
-
-
 
 	private void Start()
 	{
@@ -43,11 +30,7 @@ public class DetermineSlopeBelow : MonoBehaviour
 		{
 			RaycastAndDetermineSlope();
 
-			float bullshit = 0.0f;
-
-			yield return null;
-
-			//yield return new WaitForSeconds(slopeCheckFrequency);
+			yield return new WaitForSeconds(slopeCheckFrequency);
 		}
 	}
 
@@ -61,10 +44,6 @@ public class DetermineSlopeBelow : MonoBehaviour
 
 			//// Print the angle of the slope
 			//Debug.Log("Slope angle: " + slopeAngle);
-		}
-		else
-		{
-			//Debug.Log("No slope detected");
 		}
 	}
 
