@@ -428,27 +428,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sofa 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2832452932958347687, guid: 5821affd282770f4aa272277c84aa2a4, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 2147483647
-      objectReference: {fileID: 0}
-    - target: {fileID: 5264553333478780394, guid: 5821affd282770f4aa272277c84aa2a4, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 2147483647
-      objectReference: {fileID: 0}
-    - target: {fileID: 6739081372869044320, guid: 5821affd282770f4aa272277c84aa2a4, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 2147483647
-      objectReference: {fileID: 0}
-    - target: {fileID: 7726705979807832674, guid: 5821affd282770f4aa272277c84aa2a4, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 2147483647
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7634231066058482457, guid: 5821affd282770f4aa272277c84aa2a4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3776746318825756683}
   m_SourcePrefab: {fileID: 100100000, guid: 5821affd282770f4aa272277c84aa2a4, type: 3}
+--- !u!1 &3271237822314081842 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7634231066058482457, guid: 5821affd282770f4aa272277c84aa2a4, type: 3}
+  m_PrefabInstance: {fileID: 4942693733577559339}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3776746318825756683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3271237822314081842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5326784508547bc49b01d9db3580a788, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5063373497285600582 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 203592845211560045, guid: 5821affd282770f4aa272277c84aa2a4, type: 3}

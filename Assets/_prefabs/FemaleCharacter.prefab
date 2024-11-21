@@ -16,7 +16,8 @@ GameObject:
   - component: {fileID: 3848824341082581601}
   - component: {fileID: 1396345142103961439}
   - component: {fileID: 2364833178907804869}
-  m_Layer: 8
+  - component: {fileID: 3994867265995668679}
+  m_Layer: 0
   m_Name: ScaleableRoot
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -82,7 +83,7 @@ CharacterController:
   m_Height: 1.2
   m_Radius: 0.2
   m_SlopeLimit: 50
-  m_StepOffset: 0.05
+  m_StepOffset: 0.01
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.52, z: 0}
@@ -273,6 +274,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slopeCheckFrequency: 0.05
+--- !u!114 &3994867265995668679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6373029263182076334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dc669597900c1245a2115a84abc1f6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 0}
 --- !u!1 &7300198900357942178
 GameObject:
   m_ObjectHideFlags: 0

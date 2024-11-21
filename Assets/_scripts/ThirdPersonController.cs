@@ -357,5 +357,11 @@ namespace StarterAssets
 				AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
 			}
 		}
+
+		// PUBLIC
+		public void SetVerticalVelocity(float verticalVelocity)
+		{
+			_verticalVelocity = verticalVelocity;
+		}
 	}
 }
