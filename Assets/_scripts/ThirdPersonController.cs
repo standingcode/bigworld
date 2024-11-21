@@ -73,6 +73,7 @@ namespace StarterAssets
 		private float _targetRotation = 0.0f;
 		private float _rotationVelocity;
 		private float _verticalVelocity;
+		public float VerticalVelocity => _verticalVelocity;
 		private float _terminalVelocity = 53.0f;
 
 		// timeout deltatime
@@ -362,7 +363,10 @@ namespace StarterAssets
 		// PUBLIC
 		public void SetVerticalVelocity(float verticalVelocity)
 		{
-			_verticalVelocity = verticalVelocity;
+			if (verticalVelocity < 0.0f)
+				_verticalVelocity = verticalVelocity;
+			else
+				_verticalVelocity += verticalVelocity;
 		}
 	}
 }

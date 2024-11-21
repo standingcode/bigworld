@@ -1,9 +1,16 @@
+using StarterAssets;
 using UnityEngine;
 
 public class BounceablePlayer : MonoBehaviour
 {
-	public void BouncePlayer(Vector3 velocity)
-	{
+	[SerializeField]
+	private ThirdPersonController thirdPersonController;
 
+	public void BouncePlayer(float bounceMultiplier)
+	{
+		if (thirdPersonController.VerticalVelocity <= 0.0f)
+		{
+			thirdPersonController.SetVerticalVelocity(-thirdPersonController.VerticalVelocity * bounceMultiplier);
+		}
 	}
 }

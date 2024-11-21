@@ -18,4 +18,12 @@ public class BounceableSurface : MonoBehaviour
 			Debug.LogWarning("No BounceableObject component found on " + collision.gameObject.name);
 		}
 	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.gameObject.TryGetComponent(out BounceablePlayer bounceablePlayer))
+		{
+			bounceablePlayer.BouncePlayer(bounceability);
+		}
+	}
 }
