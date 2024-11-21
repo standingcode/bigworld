@@ -3,7 +3,47 @@ guid: 40fc744822a87c04f81a152bf15596a3
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: AttacWallSmallMaterial
+    second: {fileID: 2100000, guid: 836e045f8e590cf4588c8b2d5a067ccf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: AtticFloorMaterial
+    second: {fileID: 2100000, guid: a70d604f129f2bb488ba9dc67261c964, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: AtticWallMaterial
+    second: {fileID: 2100000, guid: e5cff50385ab40a41bc117da9304e1a7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: AtticWallMaterial.001
+    second: {fileID: 2100000, guid: 733f55ef217f5c944866bae5bad90942, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: AtticWallMaterial.002
+    second: {fileID: 2100000, guid: a0f998303c8b89047ad3e21a19580838, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glass
+    second: {fileID: 2100000, guid: c270e790ad9c346438f933c6813084cb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WindowFrame
+    second: {fileID: 2100000, guid: 3d7e68ff3cddec0448e1a32e14d4ee27, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WindowFrame.001
+    second: {fileID: 2100000, guid: c9acfc349f416224a85dcd959f172ea4, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
