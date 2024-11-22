@@ -1,4 +1,6 @@
 //using System;
+using R3.Triggers;
+using Unity.VisualScripting;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
@@ -53,6 +55,7 @@ namespace StarterAssets
 		[Header("Player Grounded")]
 		[Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
 		[SerializeField] private bool Grounded = true;
+		public bool IsGrounded => Grounded;
 
 		[Tooltip("Useful for rough ground")]
 		[SerializeField] private float groundedOffset = -0.14f;
@@ -75,6 +78,8 @@ namespace StarterAssets
 		private float _verticalVelocity;
 		public float VerticalVelocity => _verticalVelocity;
 		private float _terminalVelocity = 53.0f;
+
+		private float maxHeightSinceLastGrounded = 0f;
 
 		// timeout deltatime
 		private float _jumpTimeoutDelta;
@@ -120,12 +125,17 @@ namespace StarterAssets
 			{
 				_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 			}
+
+			maxHeightSinceLastGrounded = spherePosition.y;
 		}
 
 		private void Start()
 		{
 			_hasAnimator = TryGetComponent(out _animator);
 			_controller = GetComponent<CharacterController>();
+
+			_controller.detectCollisions = true;
+
 			_input = GetComponent<StarterAssetsInputs>();
 			_determineSlopeBelow = GetComponent<DetermineSlopeBelow>();
 #if ENABLE_INPUT_SYSTEM
@@ -159,10 +169,11 @@ namespace StarterAssets
 			_animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
 		}
 
+		private Vector3 spherePosition;
 		private void GroundedCheck()
 		{
 			// set sphere position, with offset
-			Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - groundedOffset,
+			spherePosition = new Vector3(transform.position.x, transform.position.y - groundedOffset,
 				transform.position.z);
 			Grounded = Physics.CheckSphere(spherePosition, groundedRadius, GroundLayers,
 				QueryTriggerInteraction.Ignore);
@@ -250,10 +261,15 @@ namespace StarterAssets
 			}
 		}
 
+		private bool? wasGroundedLastFrame = null;
 		private void JumpAndGravity()
 		{
 			if (Grounded)
 			{
+				wasGroundedLastFrame = true;
+
+				maxHeightSinceLastGrounded = spherePosition.y;
+
 				// reset the fall timeout timer
 				_fallTimeoutDelta = FallTimeout;
 
@@ -291,6 +307,12 @@ namespace StarterAssets
 			}
 			else
 			{
+				// Reset the max height variable when becoming airborne
+				if (wasGroundedLastFrame != null && wasGroundedLastFrame == true)
+					maxHeightSinceLastGrounded = spherePosition.y;
+
+				wasGroundedLastFrame = false;
+
 				// reset the jump timeout timer
 				_jumpTimeoutDelta = JumpTimeout;
 
@@ -310,6 +332,9 @@ namespace StarterAssets
 
 				// if we are not grounded, do not jump
 				_input.jump = false;
+
+				if (spherePosition.y > maxHeightSinceLastGrounded)
+					maxHeightSinceLastGrounded = spherePosition.y;
 			}
 
 			// apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
@@ -360,13 +385,10 @@ namespace StarterAssets
 			}
 		}
 
-		// PUBLIC
-		public void SetVerticalVelocity(float verticalVelocity)
+		public void AddVerticalVelocityToPlayer(float multiplier)
 		{
-			if (verticalVelocity < 0.0f)
-				_verticalVelocity = verticalVelocity;
-			else
-				_verticalVelocity += verticalVelocity;
+			_verticalVelocity = Mathf.Sqrt((maxHeightSinceLastGrounded - transform.position.y) * multiplier * -2f * Gravity);
+			maxHeightSinceLastGrounded = 0f;
 		}
 	}
 }

@@ -1,4 +1,5 @@
 using StarterAssets;
+using System.Collections;
 using UnityEngine;
 
 public class BounceablePlayer : MonoBehaviour
@@ -6,11 +7,34 @@ public class BounceablePlayer : MonoBehaviour
 	[SerializeField]
 	private ThirdPersonController thirdPersonController;
 
-	public void BouncePlayer(float bounceMultiplier)
+	private bool grounded = false;
+
+	void OnControllerColliderHit(ControllerColliderHit hit)
 	{
-		if (thirdPersonController.VerticalVelocity <= 0.0f)
+		if (grounded)
+			return;
+
+		grounded = true;
+
+		if (hit.gameObject.TryGetComponent(out BounceableSurface bounceableSurface))
 		{
-			thirdPersonController.SetVerticalVelocity(-thirdPersonController.VerticalVelocity * bounceMultiplier);
+			thirdPersonController.AddVerticalVelocityToPlayer(bounceableSurface.Bounceability);
+			StartCoroutine(CheckWhenNotGrounded());
 		}
+	}
+
+	private IEnumerator CheckWhenNotGrounded()
+	{
+		while (thirdPersonController.IsGrounded)
+		{
+			yield return null;
+		}
+
+		grounded = false;
+	}
+
+	private void OnDestroy()
+	{
+		StopAllCoroutines();
 	}
 }

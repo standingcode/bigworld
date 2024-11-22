@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 1396345142103961439}
   - component: {fileID: 2364833178907804869}
   - component: {fileID: 5364753953985389921}
-  - component: {fileID: 1239032939242102214}
   m_Layer: 0
   m_Name: Root
   m_TagString: Player
@@ -81,7 +80,7 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 1.73
+  m_Height: 1
   m_Radius: 0.2
   m_SlopeLimit: 50
   m_StepOffset: 0.01
@@ -288,27 +287,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thirdPersonController: {fileID: 2171625616409066014}
---- !u!65 &1239032939242102214
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6373029263182076334}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.25, y: 0.1, z: 0.25}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7300198900357942178
 GameObject:
   m_ObjectHideFlags: 0
