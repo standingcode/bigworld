@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 8dfb77dfc277f28459784973d05e5aef, type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: 20bc7097076e78041aa68f8f7e1749b4, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: b02f64cefd2650245b68f0ade156dd39, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -193,7 +193,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6430
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 2.658e-42, y: 2.524355e-29, z: 0, w: 1.022e-42}
+  m_BoundingSphereOverride: {x: 1.2581462e-38, y: -2, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -210,13 +210,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 157207112}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5740307, y: 0.19767286, z: 0.5874484, w: 0.5350874}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalRotation: {x: 0.6751764, y: 0.25664586, z: 0.43402892, w: 0.53841317}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 22.462, y: 73.477, z: 112.203}
+  m_LocalEulerAnglesHint: {x: 30.283, y: 92.885, z: 109.516}
 --- !u!114 &157207115
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -446,6 +446,14 @@ PrefabInstance:
       propertyPath: playerTrackerTransform
       value: 
       objectReference: {fileID: 2013912908}
+    - target: {fileID: 5932549737783441445, guid: 555cd9dde05a2794788e29083fe9d1fd, type: 3}
+      propertyPath: m_AllowDynamicResolution
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6092914161598681473, guid: 555cd9dde05a2794788e29083fe9d1fd, type: 3}
+      propertyPath: allowDynamicResolution
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -711,8 +719,8 @@ Transform:
   m_GameObject: {fileID: 1144770602}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.033, z: 0.991}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 15.4, y: 10.1, z: 39.8}
+  m_LocalScale: {x: 1, y: 20, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -760,7 +768,7 @@ Transform:
   m_GameObject: {fileID: 1168076767}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.926432, y: -1.5188756, z: -14.803791}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -916,7 +924,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8522420133862747669, guid: 20189348ff8fc0a4cad455bf29d9c511, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 17.59
+      value: 9.05
       objectReference: {fileID: 0}
     - target: {fileID: 8522420133862747669, guid: 20189348ff8fc0a4cad455bf29d9c511, type: 3}
       propertyPath: m_LocalPosition.y
@@ -924,7 +932,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8522420133862747669, guid: 20189348ff8fc0a4cad455bf29d9c511, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -35.26
+      value: -26.86
       objectReference: {fileID: 0}
     - target: {fileID: 8522420133862747669, guid: 20189348ff8fc0a4cad455bf29d9c511, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1311,7 +1319,7 @@ MonoBehaviour:
     camera:
       camera: 0
   m_ProxyVolume: {fileID: 0}
-  m_BakedTexture: {fileID: 8900000, guid: 1f57e2d24624ab3469a84032ebb3f1e2, type: 3}
+  m_BakedTexture: {fileID: 8900000, guid: 2ea903dcdd4d2434c9dbe4faf480e4e5, type: 3}
   m_CustomTexture: {fileID: 0}
   m_BakedRenderData:
     m_WorldToCameraRHS:

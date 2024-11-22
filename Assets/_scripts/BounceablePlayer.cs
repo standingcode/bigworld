@@ -7,14 +7,12 @@ public class BounceablePlayer : MonoBehaviour
 	[SerializeField]
 	private ThirdPersonController thirdPersonController;
 
-	private bool grounded = false;
+	private bool checkWhenNotGroundedIsRunning = false;
 
 	void OnControllerColliderHit(ControllerColliderHit hit)
 	{
-		if (grounded)
+		if (checkWhenNotGroundedIsRunning)
 			return;
-
-		grounded = true;
 
 		if (hit.gameObject.TryGetComponent(out BounceableSurface bounceableSurface))
 		{
@@ -25,12 +23,14 @@ public class BounceablePlayer : MonoBehaviour
 
 	private IEnumerator CheckWhenNotGrounded()
 	{
+		checkWhenNotGroundedIsRunning = true;
+
 		while (thirdPersonController.IsGrounded)
 		{
 			yield return null;
 		}
 
-		grounded = false;
+		checkWhenNotGroundedIsRunning = false;
 	}
 
 	private void OnDestroy()

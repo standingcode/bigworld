@@ -387,7 +387,11 @@ namespace StarterAssets
 
 		public void AddVerticalVelocityToPlayer(float multiplier)
 		{
-			_verticalVelocity = Mathf.Sqrt((maxHeightSinceLastGrounded - transform.position.y) * multiplier * -2f * Gravity);
+			var distanceFallen = (maxHeightSinceLastGrounded - transform.position.y);
+
+			if (distanceFallen > 0.2f || !Grounded)
+				_verticalVelocity = Mathf.Sqrt((distanceFallen * multiplier) * -2f * Gravity);
+
 			maxHeightSinceLastGrounded = 0f;
 		}
 	}
