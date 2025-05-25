@@ -1,6 +1,5 @@
-//using System;
-using R3.Triggers;
-using Unity.VisualScripting;
+using Mirror;
+using Unity.Hierarchy;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
@@ -15,7 +14,7 @@ namespace StarterAssets
 #if ENABLE_INPUT_SYSTEM
 	[RequireComponent(typeof(PlayerInput))]
 #endif
-	public class ThirdPersonController : MonoBehaviour
+	public class ThirdPersonController : NetworkBehaviour
 	{
 		[Header("Player")]
 		[Tooltip("Move speed of the character in m/s")]
@@ -98,7 +97,7 @@ namespace StarterAssets
 		private Animator _animator;
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
-		private GameObject _mainCamera;
+		[SerializeField] private Transform _mainCameraTransform;
 		private DetermineSlopeBelow _determineSlopeBelow;
 
 		private const float _threshold = 0.01f;
@@ -117,15 +116,8 @@ namespace StarterAssets
 			}
 		}
 
-
 		private void Awake()
 		{
-			// get a reference to our main camera
-			if (_mainCamera == null)
-			{
-				_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-			}
-
 			maxHeightSinceLastGrounded = spherePosition.y;
 		}
 
@@ -151,6 +143,7 @@ namespace StarterAssets
 			_fallTimeoutDelta = FallTimeout;
 		}
 
+		[ClientCallback]
 		private void Update()
 		{
 			_hasAnimator = TryGetComponent(out _animator);
@@ -189,6 +182,9 @@ namespace StarterAssets
 		Vector3 targetDirection = Vector3.zero;
 		float rotation = 0f;
 
+		Vector3? positionLastFrame = null;
+
+		[ClientCallback]
 		private void Move()
 		{
 			// set target speed based on move speed, sprint speed and if sprint is pressed
@@ -196,9 +192,13 @@ namespace StarterAssets
 
 			// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
-			// note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-			// if there is no input, set the target speed to 0
-			if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+			//// Only set this to zero for the local player
+			if (isLocalPlayer)
+			{
+				//note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
+				// if there is no input, set the target speed to 0
+				if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+			}
 
 			// a reference to the players current horizontal velocity
 			float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
@@ -226,18 +226,25 @@ namespace StarterAssets
 			_animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
 			if (_animationBlend < 0.01f) _animationBlend = 0f;
 
+			//if (!isLocalPlayer)
+			//{
+			//	Debug.Log($"Animation blend: {_animationBlend}");
+			//	Debug.Log($"targetSpeed: {targetSpeed}, SpeedChangeRate: {SpeedChangeRate}");
+			//	Debug.Log($"sprintSpeed: {sprintSpeed}, moveSpeed: {moveSpeed}");
+			//}
+
 			inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
 
 			// If the requested direction is behind us, we want to walk backwards
 			if (_input.move.y < walkBackwardsInputYPosition)
 			{
-				_targetRotation = Mathf.Atan2(-inputDirection.x, -inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+				_targetRotation = Mathf.Atan2(-inputDirection.x, -inputDirection.z) * Mathf.Rad2Deg + _mainCameraTransform.eulerAngles.y;
 
 				targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * -Vector3.forward;
 			}
 			else
 			{
-				_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+				_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCameraTransform.eulerAngles.y;
 
 				targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 			}
@@ -248,6 +255,7 @@ namespace StarterAssets
 			// Do the rotation
 			transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
 
+
 			// move the player
 			_controller.Move(
 							targetDirection.normalized * (_speed * _determineSlopeBelow.SlopeMultiplier * Time.deltaTime) +
@@ -256,8 +264,8 @@ namespace StarterAssets
 			// update animator if using character
 			if (_hasAnimator)
 			{
-				_animator.SetFloat(_animIDSpeed, _animationBlend);
-				_animator.SetFloat(_animIDMotionSpeed, inputMagnitude * _determineSlopeBelow.SlopeMultiplier);
+				_animator.SetFloat(_animIDSpeed, _speed);
+				_animator.SetFloat(_animIDMotionSpeed, 1f);
 			}
 		}
 
@@ -365,6 +373,7 @@ namespace StarterAssets
 				groundedRadius);
 		}
 
+		[ClientCallback]
 		private void OnFootstep(AnimationEvent animationEvent)
 		{
 			if (animationEvent.animatorClipInfo.weight > 0.5f)

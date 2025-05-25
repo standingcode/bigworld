@@ -1,10 +1,10 @@
-using UnityEditor;
+using Mirror;
 using UnityEngine;
+
 
 //[ExecuteInEditMode]
 public class CameraFollow : MonoBehaviour
 {
-
 	[SerializeField]
 	private float cameraDistance = 2.0f, cameraHeight = 1.3f, cameraSpeed = 2f, cameraZOffset = 20f;
 
@@ -19,17 +19,21 @@ public class CameraFollow : MonoBehaviour
 		SetCameraPositionImmediate();
 	}
 
-
 	void Update()
 	{
 		SetCameraPositionLerped();
 	}
 
-	void SetCameraPositionImmediate()
+	public void SetPlayerFollowTransform(Transform playerTransform)
+	{
+		playerTrackerTransform = playerTransform;
+	}
+
+	private void SetCameraPositionImmediate()
 	{
 		if (playerTrackerTransform == null)
 		{
-			Debug.LogError("Player tracker transform is not set in the camera follow script");
+			//Debug.LogError("Player tracker transform is not set in the camera follow script");
 			return;
 		}
 
@@ -42,7 +46,9 @@ public class CameraFollow : MonoBehaviour
 	{
 		if (playerTrackerTransform == null)
 		{
-			Debug.LogError("Player tracker transform is not set in the camera follow script");
+			//Debug.Log("Player tracker transform is not set in the camera follow script");
+			//GameObject.FindObj
+
 			return;
 		}
 
