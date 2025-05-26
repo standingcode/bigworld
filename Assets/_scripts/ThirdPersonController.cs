@@ -181,15 +181,13 @@ namespace StarterAssets
 		Vector3 targetDirection = Vector3.zero;
 		float rotation = 0f;
 		float speedOffset = 0.1f;
-		float inputMagnitude;
-		float inputActual;
 		float targetSpeed;
 		float currentHorizontalSpeed;
 
 		private void Move()
 		{
 			// set target speed and input actual
-			SetTargetSpeedAndInputActual();
+			SetTargetSpeed();
 
 			// if there is no input, set the target speed to 0
 			if (_input.move == Vector2.zero) targetSpeed = 0.0f;
@@ -220,25 +218,20 @@ namespace StarterAssets
 			if (_hasAnimator)
 			{
 				_animator.SetFloat(_animIDSpeed, _animationBlend);
-				_animator.SetFloat(_animIDMotionSpeed, inputActual);
+				_animator.SetFloat(_animIDMotionSpeed, _input.sprint ? 1f : _input.move.y);
 			}
 		}
 
-		private void SetTargetSpeedAndInputActual()
+		private void SetTargetSpeed()
 		{
 			if (_input.sprint)
 			{
 				targetSpeed = sprintSpeed;
-				inputActual = 1f;
-				inputMagnitude = 1f;
 			}
 			else
 			{
 				targetSpeed = moveSpeed;
-				inputActual = _input.analogMovement ? _input.move.y : 1f;
-				inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
 			}
-
 		}
 
 		private void SetTargetDirectionAndRotation()
@@ -268,7 +261,7 @@ namespace StarterAssets
 			{
 				// creates curved result rather than a linear one giving a more organic speed change
 				// note T in Lerp is clamped, so we don't need to clamp our speed
-				_speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
+				_speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * (_input.sprint ? 1f : _input.move.magnitude),
 					Time.deltaTime * SpeedChangeRate);
 
 				// round speed to 3 decimal places

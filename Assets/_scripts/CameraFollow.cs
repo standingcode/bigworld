@@ -16,6 +16,7 @@ public class CameraFollow : MonoBehaviour
 
 	void Start()
 	{
+		transform.SetParent(null);
 		SetCameraPositionImmediate();
 	}
 
