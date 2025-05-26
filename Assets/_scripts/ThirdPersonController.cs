@@ -143,10 +143,9 @@ namespace StarterAssets
 			_fallTimeoutDelta = FallTimeout;
 		}
 
-		[ClientCallback]
 		private void Update()
 		{
-			_hasAnimator = TryGetComponent(out _animator);
+			if (!isLocalPlayer) return;
 
 			JumpAndGravity();
 			GroundedCheck();
@@ -181,34 +180,91 @@ namespace StarterAssets
 		Vector3 inputDirection = Vector3.zero;
 		Vector3 targetDirection = Vector3.zero;
 		float rotation = 0f;
+		float speedOffset = 0.1f;
+		float inputMagnitude;
+		float inputActual;
+		float targetSpeed;
+		float currentHorizontalSpeed;
 
-		Vector3? positionLastFrame = null;
-
-		[ClientCallback]
 		private void Move()
 		{
-			// set target speed based on move speed, sprint speed and if sprint is pressed
-			float targetSpeed = _input.sprint ? sprintSpeed : moveSpeed;
+			// set target speed and input actual
+			SetTargetSpeedAndInputActual();
 
-			// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
-
-			//// Only set this to zero for the local player
-			if (isLocalPlayer)
-			{
-				//note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-				// if there is no input, set the target speed to 0
-				if (_input.move == Vector2.zero) targetSpeed = 0.0f;
-			}
+			// if there is no input, set the target speed to 0
+			if (_input.move == Vector2.zero) targetSpeed = 0.0f;
 
 			// a reference to the players current horizontal velocity
-			float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
+			currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
-			float speedOffset = 0.1f;
-			float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
+			// Accelerate or decelerate to target speed
+			AccelerateOrDecelerateToTargetSpeed();
 
+			// Set animation blend value based on the target speed
+			_animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
+			if (_animationBlend < 0.01f) _animationBlend = 0f;
+
+			// Set the rotation and target direction
+			SetTargetDirectionAndRotation();
+
+			// Rotate the player
+			transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+
+			// move the player
+			_controller.Move(
+							targetDirection.normalized * (_speed * _determineSlopeBelow.SlopeMultiplier * Time.deltaTime)
+							+ new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime
+			);
+
+			// Animate
+			if (_hasAnimator)
+			{
+				_animator.SetFloat(_animIDSpeed, _animationBlend);
+				_animator.SetFloat(_animIDMotionSpeed, inputActual);
+			}
+		}
+
+		private void SetTargetSpeedAndInputActual()
+		{
+			if (_input.sprint)
+			{
+				targetSpeed = sprintSpeed;
+				inputActual = 1f;
+				inputMagnitude = 1f;
+			}
+			else
+			{
+				targetSpeed = moveSpeed;
+				inputActual = _input.analogMovement ? _input.move.y : 1f;
+				inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
+			}
+
+		}
+
+		private void SetTargetDirectionAndRotation()
+		{
+			inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+
+			// If the requested direction is behind us, we want to walk backwards
+			if (_input.move.y < walkBackwardsInputYPosition)
+			{
+				_targetRotation = Mathf.Atan2(-inputDirection.x, -inputDirection.z) * Mathf.Rad2Deg + _mainCameraTransform.eulerAngles.y;
+				targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * -Vector3.forward;
+			}
+			else
+			{
+				_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCameraTransform.eulerAngles.y;
+				targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+			}
+
+			rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
+					RotationSmoothTime);
+		}
+
+		private void AccelerateOrDecelerateToTargetSpeed()
+		{
 			// accelerate or decelerate to target speed
-			if (currentHorizontalSpeed < targetSpeed - speedOffset ||
-				currentHorizontalSpeed > targetSpeed + speedOffset)
+			if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
 			{
 				// creates curved result rather than a linear one giving a more organic speed change
 				// note T in Lerp is clamped, so we don't need to clamp our speed
@@ -221,51 +277,6 @@ namespace StarterAssets
 			else
 			{
 				_speed = targetSpeed;
-			}
-
-			_animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
-			if (_animationBlend < 0.01f) _animationBlend = 0f;
-
-			//if (!isLocalPlayer)
-			//{
-			//	Debug.Log($"Animation blend: {_animationBlend}");
-			//	Debug.Log($"targetSpeed: {targetSpeed}, SpeedChangeRate: {SpeedChangeRate}");
-			//	Debug.Log($"sprintSpeed: {sprintSpeed}, moveSpeed: {moveSpeed}");
-			//}
-
-			inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
-
-			// If the requested direction is behind us, we want to walk backwards
-			if (_input.move.y < walkBackwardsInputYPosition)
-			{
-				_targetRotation = Mathf.Atan2(-inputDirection.x, -inputDirection.z) * Mathf.Rad2Deg + _mainCameraTransform.eulerAngles.y;
-
-				targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * -Vector3.forward;
-			}
-			else
-			{
-				_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCameraTransform.eulerAngles.y;
-
-				targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-			}
-
-			rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
-					RotationSmoothTime);
-
-			// Do the rotation
-			transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
-
-
-			// move the player
-			_controller.Move(
-							targetDirection.normalized * (_speed * _determineSlopeBelow.SlopeMultiplier * Time.deltaTime) +
-							 new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-
-			// update animator if using character
-			if (_hasAnimator)
-			{
-				_animator.SetFloat(_animIDSpeed, _speed);
-				_animator.SetFloat(_animIDMotionSpeed, 1f);
 			}
 		}
 
